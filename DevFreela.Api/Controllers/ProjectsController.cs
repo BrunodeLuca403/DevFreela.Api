@@ -1,11 +1,12 @@
 ﻿using DevFreela.Application.Commands.CreateComment;
 using DevFreela.Application.Commands.CreateProject;
 using DevFreela.Application.Commands.DeleteProject;
+using DevFreela.Application.Commands.FinishProject;
+using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
 using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetAllProjects;
 using DevFreela.Application.Queries.GetProjectById;
-using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,10 @@ namespace DevFreela.Api.Controllers
     [Route("[Controller]")]
     public class ProjectsControllerc : ControllerBase
     {
-        private readonly IProjectService _projectService;
         private readonly IMediator _mediator;
 
-        public ProjectsControllerc(IProjectService projectService, IMediator mediatR)
+        public ProjectsControllerc( IMediator mediatR)
         {
-            _projectService = projectService;
             _mediator = mediatR;
         }
 
@@ -88,17 +87,21 @@ namespace DevFreela.Api.Controllers
         }
 
         [HttpPut]
-        public IActionResult Start(int id)
+        public async Task<IActionResult> Start(int id)
         {
-            _projectService.Start(id);
+            var project = new StartCommand(id);
+            await _mediator.Send(project);
+
+
             return NoContent();
         }
 
 
         [HttpPut]
-        public IActionResult Finish(int id)
+        public async Task<IActionResult> Finish(int id)
         {
-            _projectService.Finish(id);
+            var project = new FinishCommand(id);
+            await _mediator.Send(project);
             return NoContent();
         }
 

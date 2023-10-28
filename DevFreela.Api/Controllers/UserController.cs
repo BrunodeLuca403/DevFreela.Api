@@ -1,6 +1,5 @@
 ﻿using DevFreela.Application.InputModels;
 using DevFreela.Application.Queries.GetUser;
-using DevFreela.Application.Services.Interfaces;
 using DevFreela.Core.Entitys;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,6 @@ namespace DevFreela.Api.Controllers
     [Route("[Controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
 
         private readonly IMediator _mediator;
 

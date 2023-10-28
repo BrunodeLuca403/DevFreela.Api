@@ -1,5 +1,4 @@
-﻿using DevFreela.Application.Queries.GetAllSkills;
-using DevFreela.Application.Services.Interfaces;
+﻿using DevFreela.Application.Queries.GetAllSkills; 
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +8,6 @@ namespace DevFreela.Api.Controllers
     [Route("[Controller]")]
     public class SkillController : ControllerBase
     {
-        private readonly ISkillService _skillService;
         private readonly IMediator _mediator;
 
         public SkillController(IMediator mediator)
