@@ -22,7 +22,7 @@ namespace DevFreela.Application.Services.Implementations
         }
         public int Create(CreateUserInputModel inputModel)
         {
-            var users = new User(inputModel.FullName, inputModel.Email, inputModel.BirthDate);
+            var users = new User(inputModel.FullName, inputModel.Password, inputModel.Email, inputModel.BirthDate);
                 _dbContext.Users.Add(users);
             _dbContext.SaveChanges();
 
