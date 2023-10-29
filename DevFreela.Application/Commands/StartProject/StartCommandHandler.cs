@@ -1,4 +1,5 @@
-﻿using DevFreela.Infrastructure.Persistense;
+﻿using DevFreela.Core.Repositores;
+using DevFreela.Infrastructure.Persistense;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,19 +11,18 @@ namespace DevFreela.Application.Commands.StartProject
 {
     public class StartCommandHandler : IRequestHandler<StartCommand, Unit>
     {
-        private readonly DevFreelaDbContext  _dbContext;
+        private readonly IProjectRepository _projectRepository;
 
-        public StartCommandHandler(DevFreelaDbContext dbContext)
+        public StartCommandHandler(IProjectRepository projectRepository)
         {
-            _dbContext = dbContext;
+            _projectRepository = projectRepository;
         }
 
         public async Task<Unit> Handle(StartCommand request, CancellationToken cancellationToken)
         {
-            var project = _dbContext.Projects.SingleOrDefault(p => p.Id == request.Id);
+            var project =  await _projectRepository.GetById(request.Id);
             project.Start();
-            await _dbContext.SaveChangesAsync();
-
+            await _projectRepository.SaveChangesAsync();
             return Unit.Value;  
         }
     }
