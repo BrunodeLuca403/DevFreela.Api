@@ -38,8 +38,15 @@ namespace DevFreela.Api.Controllers
         [HttpPost]
         public IActionResult CreateUser(int id,[FromBody] CreateUserInputModel inputModel)
         {
-            //var user = _userService.Create(inputModel);
-            //return CreatedAtAction(nameof(GetUser), new { id = user }, inputModel);
+           if(!ModelState.IsValid)
+            {
+                var message = ModelState
+                    .SelectMany(ms => ms.Value.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return BadRequest(message);
+            }
 
             var user = _mediator.Send(inputModel);
 

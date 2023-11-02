@@ -33,7 +33,7 @@ namespace DevFreela.Application.Commands.DeleteProject
 
             return Unit.Value;
 
-            await _projectRepository.DeleteProjectAsync(request.Id);
+         //   await _projectRepository.DeleteProjectAsync(request.Id);
            
         }
     }

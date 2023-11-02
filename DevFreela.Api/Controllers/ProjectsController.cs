@@ -15,16 +15,16 @@ namespace DevFreela.Api.Controllers
 {
     [ApiController]
     [Route("[Controller]")]
-    public class ProjectsControllerc : ControllerBase
+    public class ProjectsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ProjectsControllerc( IMediator mediatR)
+        public ProjectsController( IMediator mediatR)
         {
             _mediator = mediatR;
         }
 
-        [HttpGet]
+        [HttpGet("/obter-todos-projetos")]
         public async  Task<IActionResult> Get(string query)
         {
             var getAllProjectsQuery = new GetAllProjectsQuey(query);
@@ -33,7 +33,7 @@ namespace DevFreela.Api.Controllers
             return Ok(projects);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/obter-projeto-id/{id}")]
         public IActionResult GetById(int id)
         {
             //var projects = _projectService.GetById(id);
@@ -48,17 +48,25 @@ namespace DevFreela.Api.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
+        [HttpPost("/create-project")]
+        public async Task<IActionResult> CreateProject([FromBody] CreateProjectCommand command)
         {
-           // var project = _projectService.Create(inputModel);
+            //if (!ModelState.IsValid)
+            //{
+            //    var message = ModelState
+            //        .SelectMany(ms => ms.Value.Errors)
+            //        .Select(e => e.ErrorMessage)
+            //        .ToList();
+
+            //    return BadRequest(message);
+            //}
 
             var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetById), new { id = id }, command);
         }
 
-        [HttpPut]
+        [HttpPut("/atualizar-project")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectCommand command)
         {
             if (command.Id != id)
@@ -69,7 +77,7 @@ namespace DevFreela.Api.Controllers
             return NoContent(); 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/deletar-project/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var project = new DeleteProjectCommand(id);
@@ -79,14 +87,14 @@ namespace DevFreela.Api.Controllers
             return NoContent(); 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostCommet(int id, [FromBody] CreateCommentCommand createComment)
+        [HttpPost("/create-comment")]
+        public async Task<IActionResult> CreateCommet(int id, [FromBody] CreateCommentCommand createComment)
         {
            await _mediator.Send(createComment);
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("/start-project")]
         public async Task<IActionResult> Start(int id)
         {
             var project = new StartCommand(id);
@@ -97,7 +105,7 @@ namespace DevFreela.Api.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("/finalizar-project")]
         public async Task<IActionResult> Finish(int id)
         {
             var project = new FinishCommand(id);
